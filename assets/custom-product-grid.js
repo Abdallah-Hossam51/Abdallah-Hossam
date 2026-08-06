@@ -13,6 +13,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const addToCartBtn = document.getElementById("addToCartBtn");
 
   let currentProduct = null;
+  let softWinterVariantId = null;
+
+
+(async () => {
+  try {
+    const response = await fetch("/products/soft-winter-jacket.js");
+
+    if (!response.ok) return;
+
+    const jacket = await response.json();
+
+   
+    softWinterVariantId = jacket.variants[0].id;
+
+    console.log("Soft Winter Jacket Variant:", softWinterVariantId);
+
+  } catch (e) {
+    console.error("Failed to load Soft Winter Jacket", e);
+  }
+})();
 
   document.querySelectorAll(".product-popup-btn").forEach((button) => {
     button.addEventListener("click", async () => {
@@ -83,22 +103,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await fetch("/cart/add.js", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          id: variant.id,
-          quantity: 1
-        })
-      });
+       const items = [
+  {
+    id: variant.id,
+    quantity: 1
+  }
+];
 
-      window.location.href = "/cart";
+const color = variant.option1;
+const size = variant.option2;
 
-    } catch (e) {
-      console.error(e);
-    }
+if (
+  color &&
+  size &&
+  color.toLowerCase() === "black" &&
+  size.toLowerCase() === "medium" &&
+  softWinterVariantId
+) {
+  items.push({
+    id: softWinterVariantId,
+    quantity: 1
   });
+}
+
+await fetch("/cart/add.js", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    items
+  })
+});
 
   closeBtn.addEventListener("click", () => {
     modal.classList.remove("active");
