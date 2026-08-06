@@ -86,3 +86,35 @@
     font-size:14px;
     border-top:1px solid #ddd;
 }
+.banner-dark{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.15);
+}
+
+.banner-overlay{
+    position:relative;
+    z-index:2;
+}
+@media(max-width:768px){
+
+.banner-header{
+    flex-direction:column;
+    gap:20px;
+    padding:30px;
+}
+
+.banner-title{
+    font-size:42px;
+}
+
+.banner-description{
+    font-size:16px;
+    padding:0 20px;
+}
+
+.banner-strip{
+    font-size:12px;
+}
+
+}
