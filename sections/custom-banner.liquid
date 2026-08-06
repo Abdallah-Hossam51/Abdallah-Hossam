@@ -1,14 +1,98 @@
 {{ 'custom-banner.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'custom-banner.js' | asset_url }}" defer></script>
 
-<section class="custom-banner">
+<section
+  class="custom-banner"
+  {% if section.settings.background_image != blank %}
+    style="background-image:url('{{ section.settings.background_image | image_url: width: 2000 }}')"
+  {% endif %}
+>
+
+  <div class="banner-header">
+
+    <div class="logo">
+      {{ section.settings.logo_text }}
+    </div>
+
+    <div class="top-text">
+      {{ section.settings.top_text }}
+    </div>
+
+    <button class="gift-btn">
+      {{ section.settings.button_text }}
+    </button>
+
+  </div>
+
+  <div class="banner-content">
+
+      <h1>{{ section.settings.heading }}</h1>
+
+      <p>{{ section.settings.description }}</p>
+
+      <button class="shop-btn">
+          {{ section.settings.shop_button }}
+      </button>
+
+  </div>
+
+  <div class="bottom-strip">
+      {{ section.settings.bottom_text }}
+  </div>
 
 </section>
-
 {% schema %}
 {
   "name": "Custom Banner",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo",
+      "default": "TISSO VISION"
+    },
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "Top Text",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Top Button",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+    },
+    {
+      "type": "text",
+      "id": "shop_button",
+      "label": "Shop Button",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom Text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    }
+  ],
   "presets": [
     {
       "name": "Custom Banner"
