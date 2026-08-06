@@ -4,40 +4,48 @@
 <section
   class="custom-banner"
   {% if section.settings.background_image != blank %}
-    style="background-image:url('{{ section.settings.background_image | image_url: width: 2000 }}')"
+    style="background-image: url('{{ section.settings.background_image | image_url: width: 2000 }}');"
   {% endif %}
 >
 
-  <div class="banner-header">
+  <div class="banner-overlay">
 
-    <div class="logo">
-      {{ section.settings.logo_text }}
+    <header class="banner-header">
+
+      <div class="banner-logo">
+        {{ section.settings.logo_text }}
+      </div>
+
+      <div class="banner-top-text">
+        {{ section.settings.top_text }}
+      </div>
+
+      <a href="#" class="banner-btn banner-btn--outline">
+        {{ section.settings.button_text }}
+      </a>
+
+    </header>
+
+    <div class="banner-content">
+
+      <h1 class="banner-title">
+        {{ section.settings.heading }}
+      </h1>
+
+      <p class="banner-description">
+        {{ section.settings.description }}
+      </p>
+
+      <a href="#" class="banner-btn banner-btn--filled">
+        {{ section.settings.shop_button }}
+      </a>
+
     </div>
 
-    <div class="top-text">
-      {{ section.settings.top_text }}
-    </div>
-
-    <button class="gift-btn">
-      {{ section.settings.button_text }}
-    </button>
-
-  </div>
-
-  <div class="banner-content">
-
-      <h1>{{ section.settings.heading }}</h1>
-
-      <p>{{ section.settings.description }}</p>
-
-      <button class="shop-btn">
-          {{ section.settings.shop_button }}
-      </button>
-
-  </div>
-
-  <div class="bottom-strip">
+    <div class="banner-strip">
       {{ section.settings.bottom_text }}
+    </div>
+
   </div>
 
 </section>
