@@ -119,7 +119,7 @@
   position: relative;
   max-width: var(--cb-max-width);
   margin: 0 auto;
-  padding: clamp(40px, 6vw, 80px) var(--cb-gutter) clamp(60px, 8vw, 100px);
+  min-height: 760px;
   overflow: hidden;
 }
 
@@ -127,25 +127,45 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.9;
 }
 
 .custom-banner__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+}
+
+.custom-banner__hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.96) 0%,
+      rgba(255,255,255,.88) 18%,
+      rgba(255,255,255,.65) 32%,
+      rgba(255,255,255,.30) 48%,
+      rgba(255,255,255,0) 65%
+    );
+
+  pointer-events: none;
 }
 
 .custom-banner__content {
-  position: relative;
-  z-index: 1;
-  max-width: 480px;
+  position: absolute;
+  left: 64px;
+  bottom: 72px;
+  z-index: 2;
+
+  max-width: 470px;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 18px;
-  padding-top: clamp(220px, 26vw, 320px);
+  gap: 22px;
 }
 
 .custom-banner__heading {
