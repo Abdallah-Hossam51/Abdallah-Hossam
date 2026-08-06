@@ -1,0 +1,196 @@
+.custom-product-grid {
+  padding: 80px 0;
+  background: #ffffff;
+}
+
+.page-width {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.grid-heading {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 50px;
+  color: #111;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.product-card {
+  position: relative;
+}
+
+.product-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.product-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform .35s ease;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.05);
+}
+
+.product-popup-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  font-size: 30px;
+  cursor: pointer;
+  transition: .3s;
+  box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
+.product-popup-btn:hover {
+  transform: scale(1.12);
+}
+
+.product-info {
+  padding-top: 18px;
+}
+
+.product-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.product-price {
+  margin-top: 10px;
+  color: #555;
+  font-size: 18px;
+}
+
+/* ================= Modal ================= */
+
+.product-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.product-modal.active {
+  display: flex;
+}
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  width: 900px;
+  max-width: 95%;
+  border-radius: 16px;
+  padding: 40px;
+  z-index: 2;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.modal-image img {
+  width: 100%;
+  display: block;
+}
+
+.modal-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 34px;
+}
+
+#modalTitle {
+  margin: 0;
+  font-size: 32px;
+}
+
+#modalPrice {
+  margin: 20px 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+#variantContainer {
+  margin: 25px 0;
+}
+
+#variantContainer label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+#variantContainer select {
+  width: 100%;
+  height: 48px;
+  margin-bottom: 18px;
+  padding: 0 12px;
+}
+
+#addToCartBtn {
+  width: 100%;
+  height: 56px;
+  background: #111;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: .3s;
+}
+
+#addToCartBtn:hover {
+  background: #333;
+}
+
+@media (max-width: 768px) {
+
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-heading {
+    font-size: 32px;
+  }
+
+  .modal-content {
+    padding: 24px;
+  }
+
+}
