@@ -233,6 +233,24 @@
   }
 }
 
+.custom-banner__hero{
+    position:relative;
+}
+
+.custom-banner__content{
+    position:absolute;
+    left:64px;
+    bottom:90px;
+    z-index:5;
+}
+
+.custom-banner__hero-btn{
+    position:absolute;
+    left:64px;
+    bottom:40px;
+    z-index:5;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .custom-banner__btn,
   .custom-banner__btn::before,
