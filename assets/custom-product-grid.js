@@ -68,3 +68,4 @@ document.querySelectorAll('.product-popup-btn').forEach(button => {
     alert(button.dataset.handle);
   });
 });
+console.log("JS Loaded");
