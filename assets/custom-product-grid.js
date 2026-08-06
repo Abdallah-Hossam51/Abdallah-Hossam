@@ -63,3 +63,8 @@ document.querySelector(".modal-overlay").onclick=()=>{
 modal.classList.remove("active");
 
 }
+document.querySelectorAll('.product-popup-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    alert(button.dataset.handle);
+  });
+});

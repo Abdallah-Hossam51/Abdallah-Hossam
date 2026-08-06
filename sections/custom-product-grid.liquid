@@ -1,107 +1,121 @@
 {{ 'custom-product-grid.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'custom-product-grid.js' | asset_url }}" defer></script>
 
-<section class="product-grid">
+<section class="custom-product-grid">
 
-<div class="grid-container">
+  <div class="page-width">
 
-{% for block in section.blocks %}
+    <h2 class="grid-heading">{{ section.settings.heading }}</h2>
 
-{% assign product = block.settings.product %}
+    <div class="grid-container">
 
-{% if product %}
-
-<div class="product-card">
-
-<div class="product-image">
-
-{{ product.featured_image | image_url: width:700 | image_tag }}
-
-<button
-class="product-popup-btn"
-data-handle="{{ product.handle }}"
->
-+
-</button>
-
-</div>
-
-<h3>
-
-{{ product.title }}
-
-</h3>
-
-<p>
-
-{{ product.price | money }}
-
-</p>
-
-</div>
-
-{% endif %}
-
-{% endfor %}
-
-</div>
-
-</section>
-
-<div class="product-modal" id="productModal">
-
-  <div class="modal-overlay"></div>
-
-  <div class="modal-content">
-
-    <button class="modal-close">&times;</button>
-
-    <div class="modal-grid">
-
-      <div class="modal-image">
-        <img id="modalImage" src="" alt="">
+      {% assign p1 = section.settings.product_1 %}
+      {% if p1 %}
+      <div class="product-card" data-handle="{{ p1.handle }}">
+        <div class="product-image">
+          {{ p1.featured_image | image_url: width: 700 | image_tag }}
+          <button class="product-popup-btn" data-handle="{{ p1.handle }}">+</button>
+        </div>
       </div>
+      {% endif %}
 
-      <div class="modal-info">
-
-        <h2 id="modalTitle"></h2>
-
-        <p class="modal-price" id="modalPrice"></p>
-
-        <div id="variantContainer"></div>
-
-        <p id="modalDescription"></p>
-
-        <button id="addToCartBtn">
-            ADD TO CART
-        </button>
-
+      {% assign p2 = section.settings.product_2 %}
+      {% if p2 %}
+      <div class="product-card" data-handle="{{ p2.handle }}">
+        <div class="product-image">
+          {{ p2.featured_image | image_url: width: 700 | image_tag }}
+          <button class="product-popup-btn" data-handle="{{ p2.handle }}">+</button>
+        </div>
       </div>
+      {% endif %}
+
+      {% assign p3 = section.settings.product_3 %}
+      {% if p3 %}
+      <div class="product-card" data-handle="{{ p3.handle }}">
+        <div class="product-image">
+          {{ p3.featured_image | image_url: width: 700 | image_tag }}
+          <button class="product-popup-btn" data-handle="{{ p3.handle }}">+</button>
+        </div>
+      </div>
+      {% endif %}
+
+      {% assign p4 = section.settings.product_4 %}
+      {% if p4 %}
+      <div class="product-card" data-handle="{{ p4.handle }}">
+        <div class="product-image">
+          {{ p4.featured_image | image_url: width: 700 | image_tag }}
+          <button class="product-popup-btn" data-handle="{{ p4.handle }}">+</button>
+        </div>
+      </div>
+      {% endif %}
+
+      {% assign p5 = section.settings.product_5 %}
+      {% if p5 %}
+      <div class="product-card" data-handle="{{ p5.handle }}">
+        <div class="product-image">
+          {{ p5.featured_image | image_url: width: 700 | image_tag }}
+          <button class="product-popup-btn" data-handle="{{ p5.handle }}">+</button>
+        </div>
+      </div>
+      {% endif %}
+
+      {% assign p6 = section.settings.product_6 %}
+      {% if p6 %}
+      <div class="product-card" data-handle="{{ p6.handle }}">
+        <div class="product-image">
+          {{ p6.featured_image | image_url: width: 700 | image_tag }}
+          <button class="product-popup-btn" data-handle="{{ p6.handle }}">+</button>
+        </div>
+      </div>
+      {% endif %}
 
     </div>
 
   </div>
 
-</div>
+</section>
 
 {% schema %}
 {
   "name": "Custom Product Grid",
-  "settings": [],
-  "blocks": [
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tisso vision in the wild"
+    },
     {
       "type": "product",
-      "name": "Product",
-      "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Select Product"
-        }
-      ]
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product 5"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product 6"
     }
   ],
-  "max_blocks": 6,
   "presets": [
     {
       "name": "Custom Product Grid"
