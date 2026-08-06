@@ -1,120 +1,231 @@
-.custom-banner{
-    position:relative;
-    min-height:100vh;
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    display:flex;
-}
-.banner-overlay{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+.custom-banner {
+  --cb-bg: #f5f5f3;
+  --cb-ink: #111111;
+  --cb-paper: #ffffff;
+  --cb-accent: #f4c721;
+  --cb-line: rgba(17, 17, 17, 0.12);
+  --cb-radius: 999px;
+  --cb-max-width: 1440px;
+  --cb-gutter: clamp(20px, 4vw, 56px);
+
+  position: relative;
+  width: 100%;
+  color: var(--cb-ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 }
 
-.banner-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:40px 60px;
+.custom-banner__topbar {
+  background: var(--cb-bg);
+  border-bottom: 1px solid var(--cb-line);
 }
 
-.banner-logo{
-    font-size:24px;
-    font-weight:700;
-    letter-spacing:2px;
+.custom-banner__topbar-inner {
+  max-width: var(--cb-max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px var(--cb-gutter);
 }
 
-.banner-top-text{
-    font-size:18px;
+.custom-banner__logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--cb-ink);
+  white-space: nowrap;
 }
 
-.banner-content{
-    text-align:center;
-    max-width:700px;
-    margin:auto;
+.custom-banner__topbar-text {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--cb-ink);
+  text-align: center;
+  flex: 1;
 }
 
-.banner-title{
-    font-size:72px;
-    font-weight:700;
-    margin-bottom:20px;
+.custom-banner__btn {
+  --btn-bg: var(--cb-ink);
+  --btn-fg: var(--cb-paper);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.35s ease;
 }
 
-.banner-description{
-    font-size:18px;
-    line-height:1.7;
-    margin-bottom:35px;
+.custom-banner__btn--pill {
+  --btn-bg: var(--cb-accent);
+  --btn-fg: var(--cb-ink);
+  padding: 10px 18px;
+  border-radius: var(--cb-radius);
+  font-size: 12px;
 }
 
-.banner-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:170px;
-    height:56px;
-    border:2px solid #111;
-    text-decoration:none;
-    color:#111;
-    font-size:15px;
-    font-weight:600;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    transition:all .35s ease;
+.custom-banner__btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--btn-fg);
+  transform: translateX(-101%);
+  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: -1;
 }
 
-.banner-btn:hover{
-    background:#111;
-    color:#fff;
-    transform:translateY(-3px);
+.custom-banner__btn:hover {
+  color: var(--btn-bg);
 }
 
-.banner-btn--filled{
-    background:#111;
-    color:#fff;
+.custom-banner__btn:hover::before {
+  transform: translateX(0);
 }
 
-.banner-btn--filled:hover{
-    background:#fff;
-    color:#111;
+.custom-banner__btn-label {
+  position: relative;
 }
 
-.banner-strip{
-    text-align:center;
-    padding:20px;
-    font-size:14px;
-    border-top:1px solid #ddd;
-}
-.banner-dark{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.15);
+.custom-banner__btn-arrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.banner-overlay{
-    position:relative;
-    z-index:2;
-}
-@media(max-width:768px){
-
-.banner-header{
-    flex-direction:column;
-    gap:20px;
-    padding:30px;
+.custom-banner__btn:hover .custom-banner__btn-arrow {
+  transform: translateX(6px);
 }
 
-.banner-title{
-    font-size:42px;
+.custom-banner__btn:focus-visible {
+  outline: 2px solid var(--cb-ink);
+  outline-offset: 3px;
 }
 
-.banner-description{
-    font-size:16px;
-    padding:0 20px;
+.custom-banner__hero {
+  position: relative;
+  max-width: var(--cb-max-width);
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 80px) var(--cb-gutter) clamp(60px, 8vw, 100px);
+  overflow: hidden;
 }
 
-.banner-strip{
-    font-size:12px;
+.custom-banner__image-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.9;
 }
 
+.custom-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.custom-banner__content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding-top: clamp(220px, 26vw, 320px);
+}
+
+.custom-banner__heading {
+  margin: 0;
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.custom-banner__subheading {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.custom-banner__description {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 17, 0.75);
+  max-width: 40ch;
+}
+
+.custom-banner__description p {
+  margin: 0;
+}
+
+.custom-banner__btn--primary {
+  margin-top: 8px;
+}
+.custom-banner__bottombar {
+  background: var(--cb-bg);
+  border-top: 1px solid var(--cb-line);
+  border-bottom: 1px solid var(--cb-line);
+  padding: 10px var(--cb-gutter);
+}
+
+.custom-banner__bottombar-text {
+  margin: 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.75);
+}
+
+@media screen and (max-width: 749px) {
+  .custom-banner__topbar-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    padding: 14px var(--cb-gutter);
+  }
+
+  .custom-banner__topbar-text {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .custom-banner__hero {
+    padding-top: 32px;
+    padding-bottom: 48px;
+  }
+
+  .custom-banner__content {
+    padding-top: 200px;
+    max-width: 100%;
+  }
+
+  .custom-banner__heading {
+    font-size: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-banner__btn,
+  .custom-banner__btn::before,
+  .custom-banner__btn-arrow {
+    transition: none;
+  }
 }
