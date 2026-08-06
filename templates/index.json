@@ -42,10 +42,28 @@
         "button_link": "",
         "bottom_bar_text": "Sustainable, ethically made clothes in sizes XXS to 6XL"
       }
+    },
+    "custom_banner_7WC96Q": {
+      "type": "custom-banner",
+      "name": "Custom Banner",
+      "settings": {
+        "logo_text": "TISSO VISON",
+        "top_bar_text": "Find the ideal gift for your loved ones.",
+        "top_bar_button_text": "Choose gift",
+        "top_bar_button_link": "",
+        "background_image": "shopify://shop_images/striped-blouse-fashion_925x_1a1ff947-7950-4779-91a0-6583c619c0e5.jpg",
+        "heading": "The Gift Guide",
+        "sub_heading": "Holiday Collection",
+        "description": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+        "button_text": "Shop now",
+        "button_link": "",
+        "bottom_bar_text": "Sustainable, ethically made clothes in sizes XXS to 6XL"
+      }
     }
   },
   "order": [
     "custom_product_grid_ANwzrt",
-    "custom_product_grid_NdgUAq"
+    "custom_product_grid_NdgUAq",
+    "custom_banner_7WC96Q"
   ]
 }
