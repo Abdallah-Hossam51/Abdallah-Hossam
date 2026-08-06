@@ -1,11 +1,48 @@
+/**
+ * Custom Product Grid
+ * ---------------------------------------------------------------
+ * Vanilla JS. No jQuery, no external libraries.
+ *
+ * Responsibilities:
+ *  - Open a quick-view popup for a product selected in a grid card
+ *  - Fetch product data from /products/{handle}.js (cached in-memory)
+ *  - Render a dynamic variant picker (color swatches + size buttons)
+ *  - Add the selected variant to the cart via /cart/add.js
+ *  - Automatically add a "special" product when the shopper's
+ *    selection resolves to a Black + Medium variant
+ *
+ * Public surface is intentionally empty on `window` - everything is
+ * scoped inside the IIFE below. The only "global" side effect is the
+ * DOMContentLoaded listener that calls init().
+ * ---------------------------------------------------------------
+ */
 (function () {
   'use strict';
 
+  /**
+   * In-memory product cache shared by every grid instance on the page.
+   * Prevents fetching the same /products/{handle}.js twice.
+   * key: product handle -> value: parsed product JSON
+   */
   var productCache = {};
 
+  /**
+   * In-flight request cache, so rapid double-clicks on the same
+   * product don't trigger duplicate network requests.
+   * key: product handle -> value: Promise<product>
+   */
   var pendingRequests = {};
 
-  ormatMoney(cents) {
+  /* ------------------------------------------------------------- */
+  /* Utilities                                                      */
+  /* ------------------------------------------------------------- */
+
+  /**
+   * Format an amount in cents into a display price string.
+   * Falls back to a simple USD-style format if Shopify's currency
+   * object isn't available on the page.
+   */
+  function formatMoney(cents) {
     var amount = (cents || 0) / 100;
     var currencyCode =
       (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || 'USD';
@@ -21,6 +58,7 @@
     }
   }
 
+  /** Basic HTML sanitizer for product descriptions (strips <script>/<style>). */
   function sanitizeHtml(html) {
     var template = document.createElement('template');
     template.innerHTML = html || '';
@@ -260,6 +298,10 @@
 
         var colorOption = isColorOption(optionName);
 
+        if (colorOption) {
+          valuesWrap.classList.add('cpg-option-group__values--color');
+        }
+
         values.forEach(function (value) {
           var btn = document.createElement('button');
           btn.type = 'button';
@@ -269,10 +311,7 @@
           btn.setAttribute('aria-pressed', 'false');
 
           if (colorOption) {
-            var chip = document.createElement('span');
-            chip.className = 'cpg-swatch-chip';
-            chip.style.background = guessCssColor(value);
-            btn.appendChild(chip);
+            btn.style.setProperty('--swatch-color', guessCssColor(value));
           }
 
           var text = document.createElement('span');
