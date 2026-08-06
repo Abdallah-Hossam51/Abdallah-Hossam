@@ -1,0 +1,111 @@
+{{ 'custom-product-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-product-grid.js' | asset_url }}" defer></script>
+
+<section class="product-grid">
+
+<div class="grid-container">
+
+{% for block in section.blocks %}
+
+{% assign product = block.settings.product %}
+
+{% if product %}
+
+<div class="product-card">
+
+<div class="product-image">
+
+{{ product.featured_image | image_url: width:700 | image_tag }}
+
+<button
+class="product-popup-btn"
+data-handle="{{ product.handle }}"
+>
++
+</button>
+
+</div>
+
+<h3>
+
+{{ product.title }}
+
+</h3>
+
+<p>
+
+{{ product.price | money }}
+
+</p>
+
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+</div>
+
+</section>
+
+<div class="product-modal" id="productModal">
+
+  <div class="modal-overlay"></div>
+
+  <div class="modal-content">
+
+    <button class="modal-close">&times;</button>
+
+    <div class="modal-grid">
+
+      <div class="modal-image">
+        <img id="modalImage" src="" alt="">
+      </div>
+
+      <div class="modal-info">
+
+        <h2 id="modalTitle"></h2>
+
+        <p class="modal-price" id="modalPrice"></p>
+
+        <div id="variantContainer"></div>
+
+        <p id="modalDescription"></p>
+
+        <button id="addToCartBtn">
+            ADD TO CART
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Custom Product Grid",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Custom Product Grid"
+    }
+  ]
+}
+{% endschema %}
