@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   const modal = document.getElementById("productModal");
+
   if (!modal) return;
 
   const modalImage = document.getElementById("modalImage");
@@ -13,134 +15,134 @@ document.addEventListener("DOMContentLoaded", () => {
   const addToCartBtn = document.getElementById("addToCartBtn");
 
   let currentProduct = null;
+  let selectedVariant = null;
   let softWinterVariantId = null;
 
+  async function loadSoftWinterProduct() {
 
-(async () => {
-  try {
-    const response = await fetch("/products/soft-winter-jacket.js");
+    try {
 
-    if (!response.ok) return;
+      const response = await fetch("/products/soft-winter-jacket.js");
 
-    const jacket = await response.json();
+      if (!response.ok) return;
 
-   
-    softWinterVariantId = jacket.variants[0].id;
+      const jacket = await response.json();
 
-    console.log("Soft Winter Jacket Variant:", softWinterVariantId);
+      if (jacket.variants.length) {
 
-  } catch (e) {
-    console.error("Failed to load Soft Winter Jacket", e);
+        softWinterVariantId = jacket.variants[0].id;
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
   }
-})();
 
-  document.querySelectorAll(".product-popup-btn").forEach((button) => {
+  loadSoftWinterProduct();
+
+  document.querySelectorAll(".product-popup-btn").forEach(button => {
+
     button.addEventListener("click", async () => {
+
       try {
+
         const handle = button.dataset.handle;
+
         const response = await fetch(`/products/${handle}.js`);
+
+        if (!response.ok) throw new Error("Product not found");
+
         const product = await response.json();
 
         currentProduct = product;
 
+        selectedVariant = product.variants[0];
+
+        renderModal(product);
+
+        renderVariants(product);
+
         modal.classList.add("active");
 
-        modalImage.src = product.featured_image;
-        modalImage.alt = product.title;
-        modalTitle.textContent = product.title;
-        modalPrice.textContent = `$${(product.price / 100).toFixed(2)}`;
-        modalDescription.innerHTML = product.description;
-
-        buildVariantSelectors(product);
-
-      } catch (error) {
-        console.error(error);
       }
+
+      catch(error){
+
+        console.error(error);
+
+      }
+
     });
+
   });
 
-  function buildVariantSelectors(product) {
+  function renderModal(product){
+
+    modalImage.src = product.featured_image;
+
+    modalImage.alt = product.title;
+
+    modalTitle.textContent = product.title;
+
+    modalPrice.textContent =
+      `$${(product.price / 100).toFixed(2)}`;
+
+    modalDescription.innerHTML = product.description;
+
+  }
+
+  function renderVariants(product){
+
     variantContainer.innerHTML = "";
 
-    product.options.forEach((optionName, index) => {
-      const wrapper = document.createElement("div");
+    product.options.forEach((option,index)=>{
 
-      const label = document.createElement("label");
-      label.textContent = optionName;
+      const wrapper=document.createElement("div");
 
-      const select = document.createElement("select");
+      const label=document.createElement("label");
 
-      const values = [...new Set(product.variants.map(v => v[`option${index + 1}`]))];
+      label.textContent=option;
 
-      values.forEach(value => {
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = value;
+      const select=document.createElement("select");
+
+      const values=[
+        ...new Set(
+          product.variants.map(
+            v=>v[`option${index+1}`]
+          )
+        )
+      ];
+
+      values.forEach(value=>{
+
+        const option=document.createElement("option");
+
+        option.value=value;
+
+        option.textContent=value;
+
         select.appendChild(option);
+
+      });
+
+      select.addEventListener("change",()=>{
+
+        updateVariant();
+
       });
 
       wrapper.appendChild(label);
+
       wrapper.appendChild(select);
+
       variantContainer.appendChild(wrapper);
+
     });
+
+    updateVariant();
+
   }
-
-  addToCartBtn.addEventListener("click", async () => {
-    if (!currentProduct) return;
-
-    const selects = [...document.querySelectorAll("#variantContainer select")];
-
-    const selectedOptions = selects.map(s => s.value);
-
-    const variant = currentProduct.variants.find(v =>
-      selectedOptions.every((value, index) => v[`option${index + 1}`] === value)
-    );
-
-    if (!variant) {
-      alert("Variant not found");
-      return;
-    }
-
-    try {
-      await fetch("/cart/add.js", {
-       const items = [
-  {
-    id: variant.id,
-    quantity: 1
-  }
-];
-
-const color = variant.option1;
-const size = variant.option2;
-
-if (
-  color &&
-  size &&
-  color.toLowerCase() === "black" &&
-  size.toLowerCase() === "medium" &&
-  softWinterVariantId
-) {
-  items.push({
-    id: softWinterVariantId,
-    quantity: 1
-  });
-}
-
-await fetch("/cart/add.js", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    items
-  })
-});
-
-  closeBtn.addEventListener("click", () => {
-    modal.classList.remove("active");
-  });
-
-  overlay.addEventListener("click", () => {
-    modal.classList.remove("active");
-  });
-});
