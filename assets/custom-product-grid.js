@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.querySelector(".modal-close");
   const overlay = document.querySelector(".modal-overlay");
 
+  let currentProduct = null;
+  
   document.querySelectorAll(".product-popup-btn").forEach((button) => {
     button.addEventListener("click", async () => {
       try {
@@ -24,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const product = await response.json();
+
+        currentProduct = product;
 
         modal.classList.add("active");
 
@@ -79,4 +83,66 @@ document.addEventListener("DOMContentLoaded", () => {
       variantContainer.appendChild(wrapper);
     });
   }
+const addToCartBtn = document.getElementById("addToCartBtn");
+
+addToCartBtn.addEventListener("click", async () => {
+
+    if (!currentProduct) return;
+
+    const selects = [...document.querySelectorAll("#variantContainer select")];
+
+    const selectedOptions = selects.map(select => select.value);
+
+    const variant = currentProduct.variants.find(v => {
+
+        return selectedOptions.every((value, index) => {
+
+            return v[`option${index + 1}`] === value;
+
+        });
+
+    });
+
+    if (!variant) {
+
+        alert("Variant not found");
+
+        return;
+
+    }
+
+    try {
+
+        await fetch("/cart/add.js", {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                id: variant.id,
+
+                quantity: 1
+
+            })
+
+        });
+
+        alert("Added To Cart");
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+    }
+
+});
+
 });
