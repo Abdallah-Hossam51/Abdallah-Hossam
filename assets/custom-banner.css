@@ -1,4 +1,70 @@
 .custom-banner{
     min-height:100vh;
-    background:#fafafa;
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    display:flex;
+}
+
+.banner-overlay{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.banner-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:40px 60px;
+}
+
+.banner-logo{
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:2px;
+}
+
+.banner-top-text{
+    font-size:18px;
+}
+
+.banner-content{
+    text-align:center;
+    max-width:700px;
+    margin:auto;
+}
+
+.banner-title{
+    font-size:72px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.banner-description{
+    font-size:18px;
+    line-height:1.7;
+    margin-bottom:35px;
+}
+
+.banner-btn{
+    display:inline-block;
+    padding:16px 36px;
+    border:2px solid #000;
+    text-decoration:none;
+    color:#000;
+    transition:.3s;
+}
+
+.banner-btn:hover{
+    background:#000;
+    color:#fff;
+}
+
+.banner-strip{
+    text-align:center;
+    padding:20px;
+    font-size:14px;
+    border-top:1px solid #ddd;
 }
