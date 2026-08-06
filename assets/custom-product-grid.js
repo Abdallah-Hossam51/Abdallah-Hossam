@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedVariant = null;
   let softWinterVariantId = null;
 
-  async function loadSoftWinterProduct() {
+  async function loadSoftWinterVariant() {
 
     try {
 
@@ -28,10 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const jacket = await response.json();
 
-      if (jacket.variants.length) {
-
+      if (jacket.variants.length > 0) {
         softWinterVariantId = jacket.variants[0].id;
-
       }
 
     } catch (error) {
@@ -42,9 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  loadSoftWinterProduct();
+  loadSoftWinterVariant();
 
-  document.querySelectorAll(".product-popup-btn").forEach(button => {
+  const popupButtons = document.querySelectorAll(".product-popup-btn");
+
+  popupButtons.forEach(button => {
 
     button.addEventListener("click", async () => {
 
@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const response = await fetch(`/products/${handle}.js`);
 
-        if (!response.ok) throw new Error("Product not found");
+        if (!response.ok) {
+          throw new Error("Unable to load product");
+        }
 
         const product = await response.json();
 
@@ -62,9 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         selectedVariant = product.variants[0];
 
-        renderModal(product);
+        renderProduct(product);
 
-        renderVariants(product);
+        renderVariantSelectors(product);
 
         modal.classList.add("active");
 
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-  function renderModal(product){
+  function renderProduct(product){
 
     modalImage.src = product.featured_image;
 
@@ -89,51 +91,55 @@ document.addEventListener("DOMContentLoaded", () => {
     modalTitle.textContent = product.title;
 
     modalPrice.textContent =
-      `$${(product.price / 100).toFixed(2)}`;
+      `$${(selectedVariant.price / 100).toFixed(2)}`;
 
     modalDescription.innerHTML = product.description;
 
   }
 
-  function renderVariants(product){
+  function renderVariantSelectors(product){
 
     variantContainer.innerHTML = "";
 
-    product.options.forEach((option,index)=>{
+    product.options.forEach((optionName,index)=>{
 
-      const wrapper=document.createElement("div");
+      const wrapper = document.createElement("div");
 
-      const label=document.createElement("label");
+      wrapper.className = "variant-group";
 
-      label.textContent=option;
+      const label = document.createElement("label");
 
-      const select=document.createElement("select");
+      label.textContent = optionName;
 
-      const values=[
+      const select = document.createElement("select");
+
+      const values = [
+
         ...new Set(
+
           product.variants.map(
-            v=>v[`option${index+1}`]
+
+            variant => variant[`option${index+1}`]
+
           )
+
         )
+
       ];
 
       values.forEach(value=>{
 
-        const option=document.createElement("option");
+        const option = document.createElement("option");
 
-        option.value=value;
+        option.value = value;
 
-        option.textContent=value;
+        option.textContent = value;
 
         select.appendChild(option);
 
       });
 
-      select.addEventListener("change",()=>{
-
-        updateVariant();
-
-      });
+      select.addEventListener("change",updateVariant);
 
       wrapper.appendChild(label);
 
@@ -146,23 +152,18 @@ document.addEventListener("DOMContentLoaded", () => {
     updateVariant();
 
   }
-    // ==========================
-  // Update Selected Variant
-  // ==========================
 
   function updateVariant() {
 
     if (!currentProduct) return;
 
-    const selects = [
-      ...variantContainer.querySelectorAll("select")
-    ];
+    const selects = [...variantContainer.querySelectorAll("select")];
 
-    const values = selects.map(select => select.value);
+    const selectedValues = selects.map(select => select.value);
 
     selectedVariant = currentProduct.variants.find(variant => {
 
-      return values.every((value, index) => {
+      return selectedValues.every((value, index) => {
 
         return variant[`option${index + 1}`] === value;
 
@@ -170,36 +171,89 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    if (selectedVariant) {
+    if (!selectedVariant) return;
 
-      modalPrice.textContent =
-        `$${(selectedVariant.price / 100).toFixed(2)}`;
+    modalPrice.textContent =
+      `$${(selectedVariant.price / 100).toFixed(2)}`;
 
+    if (
+      selectedVariant.featured_image &&
+      selectedVariant.featured_image.src
+    ) {
+      modalImage.src = selectedVariant.featured_image.src;
     }
+
+    updateAvailableOptions();
 
   }
 
-  // ==========================
-  // Add To Cart
-  // ==========================
+  function updateAvailableOptions() {
+
+    const selects = [...variantContainer.querySelectorAll("select")];
+
+    selects.forEach((select, index) => {
+
+      const previousValues = selects
+        .slice(0, index)
+        .map(s => s.value);
+
+      [...select.options].forEach(option => {
+
+        const exists = currentProduct.variants.some(variant => {
+
+          if (!variant.available) return false;
+
+          for (let i = 0; i < previousValues.length; i++) {
+
+            if (variant[`option${i + 1}`] !== previousValues[i]) {
+
+              return false;
+
+            }
+
+          }
+
+          return variant[`option${index + 1}`] === option.value;
+
+        });
+
+        option.disabled = !exists;
+
+      });
+
+    });
+
+  }
 
   addToCartBtn.addEventListener("click", async () => {
 
     if (!selectedVariant) return;
 
-    const items = [
-      {
-        id: selectedVariant.id,
-        quantity: 1
-      }
-    ];
+    const items = [];
 
-    const color = selectedVariant.option1;
-    const size = selectedVariant.option2;
+    items.push({
+      id: selectedVariant.id,
+      quantity: 1
+    });
+
+    let color = "";
+    let size = "";
+
+    currentProduct.options.forEach((optionName, index) => {
+
+      const value = selectedVariant[`option${index + 1}`];
+
+      if (optionName.toLowerCase() === "color") {
+        color = value;
+      }
+
+      if (optionName.toLowerCase() === "size") {
+        size = value;
+      }
+
+    });
 
     if (
-      color &&
-      size &&
       color.toLowerCase() === "black" &&
       size.toLowerCase() === "medium" &&
       softWinterVariantId
@@ -230,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) {
 
-        throw new Error("Unable to add product");
+        throw new Error("Unable to add products");
 
       }
 
@@ -248,20 +302,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-  // ==========================
-  // Close Popup
-  // ==========================
-
-  closeBtn.addEventListener("click", () => {
+  function closeModal() {
 
     modal.classList.remove("active");
+
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+
+  overlay.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+
+      closeModal();
+
+    }
 
   });
 
-  overlay.addEventListener("click", () => {
+  const observer = new MutationObserver(() => {
 
-    modal.classList.remove("active");
+    if (modal.classList.contains("active")) {
 
+      document.body.style.overflow = "hidden";
+
+    } else {
+
+      document.body.style.overflow = "";
+
+    }
+
+  });
+
+  observer.observe(modal, {
+    attributes: true,
+    attributeFilter: ["class"]
   });
 
 });
