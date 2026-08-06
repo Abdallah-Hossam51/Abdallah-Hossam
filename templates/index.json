@@ -24,7 +24,7 @@
         "bottom_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
       }
     },
-    "custom_product_grid_B84PFj": {
+    "custom_product_grid_ANwzrt": {
       "type": "custom-product-grid",
       "name": "Custom Product Grid",
       "settings": {
@@ -40,6 +40,6 @@
   },
   "order": [
     "custom_banner_HCqUgy",
-    "custom_product_grid_B84PFj"
+    "custom_product_grid_ANwzrt"
   ]
 }
