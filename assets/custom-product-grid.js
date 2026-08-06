@@ -169,13 +169,11 @@
 
   /**
    * Fallback handle used when the section's "Auto-add product" setting
-   * hasn't been configured in the theme customizer. Shopify converts
-   * "Soft Winter Jacket" to this handle by default; if your store uses
-   * a different handle, either rename the product or set the picker
-   * in the customizer (Section > Auto-add product) - which always
-   * takes priority over this fallback.
+   * hasn't been configured in the theme customizer. Set explicitly in
+   * the customizer (Section > Auto-add product) to always take
+   * priority over this fallback.
    */
-  var DEFAULT_SPECIAL_PRODUCT_HANDLE = 'soft-winter-jacket';
+  var DEFAULT_SPECIAL_PRODUCT_HANDLE = 'dark-winter-jacket';
 
   /* ------------------------------------------------------------- */
   /* Grid controller factory - one per .custom-product-grid section */
