@@ -1,0 +1,45 @@
+{% assign product = product %}
+
+{% if product %}
+
+<div class="product-card">
+
+    <div class="product-image">
+
+        {{
+            product.featured_image
+            | image_url: width: 900
+            | image_tag:
+                loading: 'lazy',
+                class: 'product-img'
+        }}
+
+        <button
+            class="product-popup-btn"
+            data-handle="{{ product.handle }}"
+            aria-label="Open product"
+        >
+            +
+        </button>
+
+    </div>
+
+    <div class="product-info">
+
+        <h3 class="product-title">
+
+            {{ product.title }}
+
+        </h3>
+
+        <p class="product-price">
+
+            {{ product.price | money }}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}

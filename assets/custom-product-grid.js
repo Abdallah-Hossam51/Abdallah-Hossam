@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const modal = document.getElementById("productModal");
+
+if (!modal) {
+  console.error("Modal not found");
+  return;
+}
   const modalImage = document.getElementById("modalImage");
   const modalTitle = document.getElementById("modalTitle");
   const modalPrice = document.getElementById("modalPrice");

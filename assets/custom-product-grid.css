@@ -51,3 +51,16 @@
     grid-template-columns:1fr;
   }
 }
+
+.product-modal{
+display:none;
+position:fixed;
+inset:0;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.product-modal.active{
+display:flex;
+}
