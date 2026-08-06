@@ -146,3 +146,122 @@ document.addEventListener("DOMContentLoaded", () => {
     updateVariant();
 
   }
+    // ==========================
+  // Update Selected Variant
+  // ==========================
+
+  function updateVariant() {
+
+    if (!currentProduct) return;
+
+    const selects = [
+      ...variantContainer.querySelectorAll("select")
+    ];
+
+    const values = selects.map(select => select.value);
+
+    selectedVariant = currentProduct.variants.find(variant => {
+
+      return values.every((value, index) => {
+
+        return variant[`option${index + 1}`] === value;
+
+      });
+
+    });
+
+    if (selectedVariant) {
+
+      modalPrice.textContent =
+        `$${(selectedVariant.price / 100).toFixed(2)}`;
+
+    }
+
+  }
+
+  // ==========================
+  // Add To Cart
+  // ==========================
+
+  addToCartBtn.addEventListener("click", async () => {
+
+    if (!selectedVariant) return;
+
+    const items = [
+      {
+        id: selectedVariant.id,
+        quantity: 1
+      }
+    ];
+
+    const color = selectedVariant.option1;
+    const size = selectedVariant.option2;
+
+    if (
+      color &&
+      size &&
+      color.toLowerCase() === "black" &&
+      size.toLowerCase() === "medium" &&
+      softWinterVariantId
+    ) {
+
+      items.push({
+        id: softWinterVariantId,
+        quantity: 1
+      });
+
+    }
+
+    try {
+
+      const response = await fetch("/cart/add.js", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          items: items
+        })
+
+      });
+
+      if (!response.ok) {
+
+        throw new Error("Unable to add product");
+
+      }
+
+      modal.classList.remove("active");
+
+      window.location.href = "/cart";
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+    }
+
+  });
+
+  // ==========================
+  // Close Popup
+  // ==========================
+
+  closeBtn.addEventListener("click", () => {
+
+    modal.classList.remove("active");
+
+  });
+
+  overlay.addEventListener("click", () => {
+
+    modal.classList.remove("active");
+
+  });
+
+});
