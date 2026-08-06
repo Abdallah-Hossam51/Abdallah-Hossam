@@ -204,12 +204,10 @@
 
 /* CTA button, overlaid directly on the image, independent of the glass panel */
 .custom-banner__hero-btn {
-  position: absolute;
-  left: 64px;
-  bottom: 40px;
-  z-index: 5;
+  position: static;
+  margin-top: 10px;
+  align-self: flex-start;
 }
-
 /* ---------- Bottom bar ---------- */
 .custom-banner__bottombar {
   background: var(--cb-bg);
