@@ -314,17 +314,13 @@
     max-width: 100%;
   }
 
-  .custom-banner__hero-btn {
-    order: 3;
-    position: absolute;
-    left: 50%;
-    bottom: 20px;
-    transform: translateX(-50%);
-    z-index: 5;
-    width: calc(100% - 48px);
-    display: flex;
-    justify-content: center;
-  }
+  .custom-banner__hero-btn{
+        position:absolute;
+        left:50%;
+        bottom:20px;
+        transform:translateX(-50%);
+        width:calc(100% - 48px);
+    }
 
   .custom-banner__hero-btn .custom-banner__btn {
     width: 100%;
