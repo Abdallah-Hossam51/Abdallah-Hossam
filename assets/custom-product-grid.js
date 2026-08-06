@@ -167,6 +167,16 @@
     return null;
   }
 
+  /**
+   * Fallback handle used when the section's "Auto-add product" setting
+   * hasn't been configured in the theme customizer. Shopify converts
+   * "Soft Winter Jacket" to this handle by default; if your store uses
+   * a different handle, either rename the product or set the picker
+   * in the customizer (Section > Auto-add product) - which always
+   * takes priority over this fallback.
+   */
+  var DEFAULT_SPECIAL_PRODUCT_HANDLE = 'soft-winter-jacket';
+
   /* ------------------------------------------------------------- */
   /* Grid controller factory - one per .custom-product-grid section */
   /* ------------------------------------------------------------- */
@@ -176,7 +186,8 @@
     var modal = sectionEl.querySelector('[data-product-modal]');
     if (!grid || !modal) return;
 
-    var specialHandle = sectionEl.getAttribute('data-special-product-handle') || '';
+    var specialHandle =
+      sectionEl.getAttribute('data-special-product-handle') || DEFAULT_SPECIAL_PRODUCT_HANDLE;
 
     var els = {
       loading: modal.querySelector('[data-modal-loading]'),
@@ -454,9 +465,22 @@
       if (!specialHandle) return Promise.resolve(null);
       return fetchProduct(specialHandle)
         .then(function (product) {
-          return findBlackMediumVariant(product);
+          var match = findBlackMediumVariant(product);
+          if (!match) {
+            console.warn(
+              '[custom-product-grid] Auto-add product "' +
+                specialHandle +
+                '" has no Black + Medium variant to add.'
+            );
+          }
+          return match;
         })
         .catch(function () {
+          console.warn(
+            '[custom-product-grid] Could not load the auto-add product at handle "' +
+              specialHandle +
+              '". Set it explicitly via Section settings > Auto-add product in the theme customizer.'
+          );
           return null;
         });
     }
