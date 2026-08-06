@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("productModal");
 
   if (!modal) return;
-
+const SOFT_WINTER_JACKET_VARIANT = 9492356792508;
   const modalImage = document.getElementById("modalImage");
   const modalTitle = document.getElementById("modalTitle");
   const modalPrice = document.getElementById("modalPrice");
