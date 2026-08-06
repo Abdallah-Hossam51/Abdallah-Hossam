@@ -19,7 +19,7 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap: 30px;
 }
 
@@ -192,5 +192,29 @@
   .modal-content {
     padding: 24px;
   }
+
+}
+.product-popup-btn{
+
+transition:.35s ease;
+
+}
+
+.product-popup-btn:hover{
+
+transform:rotate(90deg) scale(1.1);
+
+}
+#addToCartBtn{
+
+transition:.3s;
+
+}
+
+#addToCartBtn:hover{
+
+background:#444;
+
+transform:translateY(-2px);
 
 }

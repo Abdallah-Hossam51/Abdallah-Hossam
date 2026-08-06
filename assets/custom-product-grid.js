@@ -38,7 +38,8 @@ const SOFT_WINTER_JACKET_VARIANT = 9492356792508;
 
         modalPrice.textContent = `$${(product.price / 100).toFixed(2)}`;
 
-        modalDescription.innerHTML = product.description;
+        modalDescription.innerHTML =
+product.description.substring(0,180)+"...";
 
         buildVariantSelectors(product);
       } catch (error) {
@@ -122,7 +123,30 @@ addToCartBtn.addEventListener("click", async () => {
                 "Content-Type": "application/json"
 
             },
+const color = variant.option1;
+const size = variant.option2;
 
+if (color === "Black" && size === "Medium") {
+
+    await fetch("/cart/add.js",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            id:SOFT_WINTER_JACKET_VARIANT,
+
+            quantity:1
+
+        })
+
+    });
+
+}
             body: JSON.stringify({
 
                 id: variant.id,
@@ -133,7 +157,7 @@ addToCartBtn.addEventListener("click", async () => {
 
         });
 
-        alert("Added To Cart");
+        window.location.href="/cart";
 
     }
 
