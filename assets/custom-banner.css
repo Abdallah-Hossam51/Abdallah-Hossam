@@ -115,8 +115,12 @@
   outline-offset: 3px;
 }
 
-.custom-banner__hero{
-    position:relative;
+.custom-banner__hero {
+  position: relative;
+  max-width: var(--cb-max-width);
+  margin: 0 auto;
+  min-height: 760px;
+  overflow: hidden;
 }
 
 .custom-banner__image-wrap {
@@ -135,10 +139,9 @@
     position:absolute;
 
     left:64px;
-    bottom:70px;
+    bottom:90px;
 
-    z-index:2;
-
+    z-index:5;
     width:520px;
 
     background:rgba(255,255,255,.82);
