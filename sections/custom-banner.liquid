@@ -1,11 +1,8 @@
 {{ 'custom-banner.css' | asset_url | stylesheet_tag }}
 
-{% assign has_bg_image = false %}
-
 {% if section.settings.background_image %}
   {% assign has_bg_image = true %}
 {% endif %}
-
 
 <section
   class="custom-banner"
@@ -13,6 +10,7 @@
   data-section-type="custom-banner"
 >
 
+  {%- comment -%} ================= TOP UTILITY BAR ================= {%- endcomment -%}
   {%- if section.settings.logo_text != blank or section.settings.top_bar_text != blank or section.settings.top_bar_button_text != blank -%}
     <div class="custom-banner__topbar">
       <div class="custom-banner__topbar-inner">
@@ -52,6 +50,7 @@
     </div>
   {%- endif -%}
 
+  {%- comment -%} ================= MAIN HERO ================= {%- endcomment -%}
   <div class="custom-banner__hero{% if has_bg_image %} custom-banner__hero--has-image{% endif %}">
     {%- if has_bg_image -%}
       <div class="custom-banner__image-wrap">
@@ -99,6 +98,7 @@
     {%- endif -%}
   </div>
 
+  {%- comment -%} ================= BOTTOM STRIP ================= {%- endcomment -%}
   {%- if section.settings.bottom_bar_text != blank -%}
     <div class="custom-banner__bottombar">
       <p class="custom-banner__bottombar-text">{{ section.settings.bottom_bar_text }}</p>
