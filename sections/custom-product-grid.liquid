@@ -5,69 +5,20 @@
 
   <div class="page-width">
 
-    <h2 class="grid-heading">{{ section.settings.heading }}</h2>
+    {% if section.settings.heading != blank %}
+      <h2 class="grid-heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
 
     <div class="grid-container">
 
-      {% assign p1 = section.settings.product_1 %}
-      {% if p1 %}
-      <div class="product-card" data-handle="{{ p1.handle }}">
-        <div class="product-image">
-          {{ p1.featured_image | image_url: width: 700 | image_tag }}
-          <button class="product-popup-btn" data-handle="{{ p1.handle }}">+</button>
-        </div>
-      </div>
-      {% endif %}
-
-      {% assign p2 = section.settings.product_2 %}
-      {% if p2 %}
-      <div class="product-card" data-handle="{{ p2.handle }}">
-        <div class="product-image">
-          {{ p2.featured_image | image_url: width: 700 | image_tag }}
-          <button class="product-popup-btn" data-handle="{{ p2.handle }}">+</button>
-        </div>
-      </div>
-      {% endif %}
-
-      {% assign p3 = section.settings.product_3 %}
-      {% if p3 %}
-      <div class="product-card" data-handle="{{ p3.handle }}">
-        <div class="product-image">
-          {{ p3.featured_image | image_url: width: 700 | image_tag }}
-          <button class="product-popup-btn" data-handle="{{ p3.handle }}">+</button>
-        </div>
-      </div>
-      {% endif %}
-
-      {% assign p4 = section.settings.product_4 %}
-      {% if p4 %}
-      <div class="product-card" data-handle="{{ p4.handle }}">
-        <div class="product-image">
-          {{ p4.featured_image | image_url: width: 700 | image_tag }}
-          <button class="product-popup-btn" data-handle="{{ p4.handle }}">+</button>
-        </div>
-      </div>
-      {% endif %}
-
-      {% assign p5 = section.settings.product_5 %}
-      {% if p5 %}
-      <div class="product-card" data-handle="{{ p5.handle }}">
-        <div class="product-image">
-          {{ p5.featured_image | image_url: width: 700 | image_tag }}
-          <button class="product-popup-btn" data-handle="{{ p5.handle }}">+</button>
-        </div>
-      </div>
-      {% endif %}
-
-      {% assign p6 = section.settings.product_6 %}
-      {% if p6 %}
-      <div class="product-card" data-handle="{{ p6.handle }}">
-        <div class="product-image">
-          {{ p6.featured_image | image_url: width: 700 | image_tag }}
-          <button class="product-popup-btn" data-handle="{{ p6.handle }}">+</button>
-        </div>
-      </div>
-      {% endif %}
+      {% render 'product-card', product: section.settings.product_1 %}
+      {% render 'product-card', product: section.settings.product_2 %}
+      {% render 'product-card', product: section.settings.product_3 %}
+      {% render 'product-card', product: section.settings.product_4 %}
+      {% render 'product-card', product: section.settings.product_5 %}
+      {% render 'product-card', product: section.settings.product_6 %}
 
     </div>
 
@@ -75,31 +26,44 @@
 
 </section>
 
+<!-- Product Popup -->
+
 <div class="product-modal" id="productModal">
 
   <div class="modal-overlay"></div>
 
   <div class="modal-content">
 
-    <button class="modal-close">&times;</button>
+    <button class="modal-close" type="button">
+      &times;
+    </button>
 
     <div class="modal-grid">
 
       <div class="modal-image">
-        <img id="modalImage" src="" alt="">
+
+        <img
+          id="modalImage"
+          src=""
+          alt=""
+        >
+
       </div>
 
       <div class="modal-info">
 
         <h2 id="modalTitle"></h2>
 
-        <p class="modal-price" id="modalPrice"></p>
+        <p id="modalPrice"></p>
 
         <div id="variantContainer"></div>
 
         <div id="modalDescription"></div>
 
-        <button id="addToCartBtn">
+        <button
+          id="addToCartBtn"
+          type="button"
+        >
           ADD TO CART
         </button>
 
