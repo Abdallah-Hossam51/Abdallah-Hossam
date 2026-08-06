@@ -20,7 +20,7 @@
         {{ section.settings.top_text }}
       </div>
 
-      <a href="#" class="banner-btn banner-btn--outline">
+      <a href="{{ section.settings.button_link }}" class="banner-btn banner-btn--outline">
         {{ section.settings.button_text }}
       </a>
 
@@ -36,7 +36,7 @@
         {{ section.settings.description }}
       </p>
 
-      <a href="#" class="banner-btn banner-btn--filled">
+     <a href="{{ section.settings.shop_button_link }}" class="banner-btn banner-btn--filled">
         {{ section.settings.shop_button }}
       </a>
 
@@ -72,6 +72,11 @@
       "default": "CHOOSE GIFT"
     },
     {
+  "type": "url",
+  "id": "button_link",
+  "label": "Top Button Link"
+},
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
@@ -89,6 +94,11 @@
       "label": "Shop Button",
       "default": "SHOP NOW"
     },
+    {
+  "type": "url",
+  "id": "shop_button_link",
+  "label": "Shop Button Link"
+},
     {
       "type": "text",
       "id": "bottom_text",
