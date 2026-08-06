@@ -9,37 +9,43 @@
  */
 {
   "sections": {
-    "custom_banner_HCqUgy": {
-      "type": "custom-banner",
-      "name": "Custom Banner",
-      "settings": {
-        "logo_text": "TISSO VISION",
-        "top_text": "Find the ideal gift for your loved ones.",
-        "button_text": "CHOOSE GIFT",
-        "button_link": "",
-        "heading": "The Gift Guide",
-        "description": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
-        "shop_button": "SHOP NOW",
-        "shop_button_link": "",
-        "bottom_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
-      }
-    },
     "custom_product_grid_ANwzrt": {
       "type": "custom-product-grid",
+      "disabled": true,
       "name": "Custom Product Grid",
       "settings": {
+        "logo_text": "TISSO VISON",
+        "top_bar_text": "Find the ideal gift for your loved ones.",
+        "top_bar_button_text": "Choose gift",
+        "top_bar_button_link": "",
         "heading": "Tisso vision in the wild",
-        "product_1": "black-leather-bag",
-        "product_2": "blue-silk-tuxedo",
-        "product_3": "chequered-red-shirt",
-        "product_4": "classic-leather-jacket",
-        "product_5": "classic-varsity-top",
-        "product_6": "dark-denim-top"
+        "sub_heading": "Holiday Collection",
+        "description": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+        "button_text": "Shop now",
+        "button_link": "",
+        "bottom_bar_text": "Sustainable, ethically made clothes in sizes XXS to 6XL"
+      }
+    },
+    "custom_product_grid_NdgUAq": {
+      "type": "custom-product-grid",
+      "name": "Custom Banner",
+      "settings": {
+        "logo_text": "TISSO VISON",
+        "top_bar_text": "Find the ideal gift for your loved ones.",
+        "top_bar_button_text": "Choose gift",
+        "top_bar_button_link": "",
+        "background_image": "shopify://shop_images/young-man-in-bright-fashion_925x_b3b7ebd6-c91f-496a-a516-45403497ea25.jpg",
+        "heading": "The Gift Guide",
+        "sub_heading": "Holiday Collection",
+        "description": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+        "button_text": "Shop now",
+        "button_link": "",
+        "bottom_bar_text": "Sustainable, ethically made clothes in sizes XXS to 6XL"
       }
     }
   },
   "order": [
-    "custom_banner_HCqUgy",
-    "custom_product_grid_ANwzrt"
+    "custom_product_grid_ANwzrt",
+    "custom_product_grid_NdgUAq"
   ]
 }
