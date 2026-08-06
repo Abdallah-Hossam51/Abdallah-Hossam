@@ -258,46 +258,4 @@
     transition: none;
   }
 }
-@media(max-width:749px){
 
-.custom-banner__hero{
-
-display:flex;
-
-flex-direction:column;
-
-}
-
-.custom-banner__content{
-
-position:relative;
-
-left:auto;
-
-bottom:auto;
-
-padding:40px 24px;
-
-background:#fff;
-
-text-align:center;
-
-}
-
-.custom-banner__image-wrap{
-
-position:relative;
-
-}
-
-.custom-banner__hero-btn{
-
-position:absolute;
-
-left:24px;
-
-bottom:24px;
-
-}
-
-}
