@@ -135,25 +135,6 @@
   object-fit: cover;
 }
 
-.custom-banner__hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.96) 0%,
-      rgba(255,255,255,.88) 18%,
-      rgba(255,255,255,.65) 32%,
-      rgba(255,255,255,.30) 48%,
-      rgba(255,255,255,0) 65%
-    );
-
-  pointer-events: none;
-}
-
 .custom-banner__content{
     position:absolute;
 
@@ -178,7 +159,6 @@
     align-items:flex-start;
     gap:22px;
 }
-
 .custom-banner__heading {
   margin: 0;
   font-size: clamp(40px, 6vw, 64px);
