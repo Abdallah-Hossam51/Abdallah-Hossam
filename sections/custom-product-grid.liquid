@@ -1,125 +1,136 @@
 {{ 'custom-product-grid.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'custom-product-grid.js' | asset_url }}" defer></script>
 
-<section class="custom-product-grid">
+<section class="custom-grid">
 
-  <div class="page-width">
+    <div class="page-width">
 
-    {% if section.settings.heading != blank %}
-      <h2 class="grid-heading">
-        {{ section.settings.heading }}
-      </h2>
-    {% endif %}
+        <h2>{{ section.settings.heading }}</h2>
 
-    <div class="grid-container">
+        <div class="grid">
 
-      {% render 'product-card', product: section.settings.product_1 %}
-      {% render 'product-card', product: section.settings.product_2 %}
-      {% render 'product-card', product: section.settings.product_3 %}
-      {% render 'product-card', product: section.settings.product_4 %}
-      {% render 'product-card', product: section.settings.product_5 %}
-      {% render 'product-card', product: section.settings.product_6 %}
+            {% for block in section.blocks %}
+
+                {% assign product = block.settings.product %}
+
+                {% if product %}
+
+                <div class="card">
+
+                    <img
+                        src="{{ product.featured_image | image_url: width:700 }}"
+                        alt="{{ product.title }}"
+                    >
+
+                    <button
+                        class="popup-btn"
+                        data-handle="{{ product.handle }}"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
 
     </div>
-
-  </div>
 
 </section>
 
-<!-- Product Popup -->
+<!-- ================= Popup ================= -->
 
-<div class="product-modal" id="productModal">
+<div id="productModal" class="product-modal">
 
-  <div class="modal-overlay"></div>
+    <div class="overlay"></div>
 
-  <div class="modal-content">
+    <div class="modal">
 
-    <button class="modal-close" type="button">
-      &times;
-    </button>
+        <button class="close">&times;</button>
 
-    <div class="modal-grid">
+        <div class="left">
 
-      <div class="modal-image">
+            <img id="modalImage">
 
-        <img
-          id="modalImage"
-          src=""
-          alt=""
-        >
+        </div>
 
-      </div>
+        <div class="right">
 
-      <div class="modal-info">
+            <h2 id="modalTitle"></h2>
 
-        <h2 id="modalTitle"></h2>
+            <p id="modalPrice"></p>
 
-        <p id="modalPrice"></p>
+            <div id="variantContainer"></div>
 
-        <div id="variantContainer"></div>
+            <div id="modalDescription"></div>
 
-        <div id="modalDescription"></div>
+            <button id="addToCart">
 
-        <button
-          id="addToCartBtn"
-          type="button"
-        >
-          ADD TO CART
-        </button>
+                ADD TO CART
 
-      </div>
+            </button>
+
+        </div>
 
     </div>
-
-  </div>
 
 </div>
 
 {% schema %}
 {
-  "name": "Custom Product Grid",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Tisso vision in the wild"
-    },
-    {
-      "type": "product",
-      "id": "product_1",
-      "label": "Product 1"
-    },
-    {
-      "type": "product",
-      "id": "product_2",
-      "label": "Product 2"
-    },
-    {
-      "type": "product",
-      "id": "product_3",
-      "label": "Product 3"
-    },
-    {
-      "type": "product",
-      "id": "product_4",
-      "label": "Product 4"
-    },
-    {
-      "type": "product",
-      "id": "product_5",
-      "label": "Product 5"
-    },
-    {
-      "type": "product",
-      "id": "product_6",
-      "label": "Product 6"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Custom Product Grid"
-    }
-  ]
+"name":"Custom Product Grid",
+
+"settings":[
+
+{
+"type":"text",
+"id":"heading",
+"label":"Heading",
+"default":"Tisso vision in the wild"
+}
+
+],
+
+"blocks":[
+
+{
+
+"type":"product",
+
+"name":"Product",
+
+"settings":[
+
+{
+
+"type":"product",
+
+"id":"product",
+
+"label":"Product"
+
+}
+
+]
+
+}
+
+],
+
+"max_blocks":6,
+
+"presets":[
+
+{
+
+"name":"Custom Product Grid"
+
+}
+
+]
+
 }
 {% endschema %}
