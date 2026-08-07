@@ -77,7 +77,9 @@
       "name": "Custom Product Grid",
       "settings": {
         "heading": "Tisso vison in the wild",
-        "special_product": "dark-winter-jacket"
+        "special_product": "dark-winter-jacket",
+        "hotspot_x": 89,
+        "hotspot_y": 56
       }
     }
   },
