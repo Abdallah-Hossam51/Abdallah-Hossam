@@ -180,9 +180,21 @@
   /* ------------------------------------------------------------- */
 
   /**
+   * Section IDs Shopify will re-render and return HTML for, if a
+   * section with that id exists in your theme (most Dawn-based
+   * themes include some of these). This is the same mechanism the
+   * default theme uses internally to keep the header cart icon and
+   * mini-cart in sync after an AJAX add - since it comes straight
+   * from the server, it's accurate regardless of what JS framework
+   * the theme itself uses.
+   */
+  var CART_SECTION_IDS = ['cart-icon-bubble', 'cart-notification', 'cart-drawer', 'cart-live-region-text'];
+
+  /**
    * Selectors for cart-count elements used by common theme patterns.
-   * Best-effort: if none of these exist on the page, this is a no-op
-   * and the toast notification below is the fallback feedback.
+   * Best-effort fallback for themes that don't have a matching
+   * section id above: if none of these exist on the page either,
+   * this is a no-op and the toast notification is the last resort.
    */
   var CART_COUNT_SELECTORS = [
     '[data-cart-count]',
@@ -198,6 +210,30 @@
     return fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (response) {
       if (!response.ok) throw new Error('Could not read cart');
       return response.json();
+    });
+  }
+
+  /**
+   * Swap in server-rendered section HTML returned by /cart/add.js
+   * when a "sections" param is passed. Only touches elements that
+   * already exist on the page with a matching id - if your theme
+   * doesn't have a section with that id, this is a harmless no-op.
+   */
+  function applySectionRenders(sections) {
+    if (!sections) return;
+
+    Object.keys(sections).forEach(function (id) {
+      var target = document.getElementById(id);
+      if (!target) return;
+
+      var parsedDoc = new DOMParser().parseFromString(sections[id], 'text/html');
+      var replacement = parsedDoc.getElementById(id);
+
+      if (replacement) {
+        target.outerHTML = replacement.outerHTML;
+      } else {
+        target.innerHTML = sections[id];
+      }
     });
   }
 
@@ -598,7 +634,11 @@
           return fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({ items: items }),
+            body: JSON.stringify({
+              items: items,
+              sections: CART_SECTION_IDS,
+              sections_url: window.location.pathname,
+            }),
           });
         })
         .then(function (response) {
@@ -609,7 +649,8 @@
           }
           return response.json();
         })
-        .then(function () {
+        .then(function (data) {
+          applySectionRenders(data && data.sections);
           setAddButtonState('success');
           return syncCartUi();
         })
