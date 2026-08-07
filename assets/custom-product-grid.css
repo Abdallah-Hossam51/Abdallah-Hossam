@@ -403,6 +403,45 @@
   background: #c0392b;
 }
 
+/* ---------- Cart confirmation toast ---------- */
+.cpg-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 2000;
+  transform: translate(-50%, 12px);
+  padding: 13px 22px;
+  background: var(--cpg-ink, #111111);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.cpg-toast--visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media screen and (max-width: 749px) {
+  .cpg-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    transform: translateY(12px);
+    text-align: center;
+  }
+
+  .cpg-toast--visible {
+    transform: translateY(0);
+  }
+}
+
 /* ---------- Responsive ---------- */
 @media screen and (max-width: 989px) {
   .custom-product-grid__grid {
@@ -433,17 +472,66 @@
     height: 15px;
   }
 
-  .custom-product-modal__content {
+  /* ---------- Modal ---------- */
+  .custom-product-modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .custom-product-modal__dialog {
+    max-width: 100%;
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 12px 12px 0 0;
+    animation: cpgSlideUpSheet 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes cpgSlideUpSheet {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .custom-product-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+  }
+
+  .custom-product-modal__body {
+    padding: 20px 20px 28px;
+  }
+
+  .custom-product-modal__top {
     flex-direction: column;
+    gap: 14px;
   }
 
   .custom-product-modal__media {
     width: 100%;
-    height: 220px;
+    height: 200px;
   }
 
-  .custom-product-modal__body {
-    padding: 22px;
+  .custom-product-modal__title {
+    font-size: 18px;
+  }
+
+  .cpg-option-group__values--color,
+  .cpg-option-group__values {
+    width: 100%;
+  }
+
+  .cpg-option-value {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 12px 10px;
+  }
+
+  .custom-product-modal__add-btn {
+    padding: 16px 20px;
+    font-size: 14px;
   }
 }
 
