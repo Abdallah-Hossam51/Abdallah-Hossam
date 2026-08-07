@@ -176,6 +176,101 @@
   var DEFAULT_SPECIAL_PRODUCT_HANDLE = 'dark-winter-jacket';
 
   /* ------------------------------------------------------------- */
+  /* Cart UI sync                                                   */
+  /* ------------------------------------------------------------- */
+
+  /**
+   * Selectors for cart-count elements used by common theme patterns.
+   * Best-effort: if none of these exist on the page, this is a no-op
+   * and the toast notification below is the fallback feedback.
+   */
+  var CART_COUNT_SELECTORS = [
+    '[data-cart-count]',
+    '.cart-count',
+    '.cart-count-bubble',
+    '#cart-icon-bubble',
+    '#CartCount',
+    '#CartCount-mobile',
+    '.js-cart-count',
+  ];
+
+  function fetchCart() {
+    return fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (response) {
+      if (!response.ok) throw new Error('Could not read cart');
+      return response.json();
+    });
+  }
+
+  function updateCartCountBadges(cart) {
+    var count = cart && typeof cart.item_count === 'number' ? cart.item_count : null;
+    if (count === null) return;
+
+    CART_COUNT_SELECTORS.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) {
+        if (el.hasAttribute('data-cart-count') || el.matches('[data-cart-count]')) {
+          el.setAttribute('data-cart-count', String(count));
+        }
+        // Only overwrite text content for simple counter elements
+        // (skip elements that themselves contain further markup, like
+        // an <svg> icon wrapper, to avoid destroying the icon).
+        if (!el.querySelector('svg') && !el.children.length) {
+          el.textContent = String(count);
+        }
+        el.classList.toggle('is-visible', count > 0);
+        if (el.hasAttribute('hidden') || el.style.display === 'none') {
+          el.hidden = count === 0;
+        }
+      });
+    });
+  }
+
+  /**
+   * After a successful /cart/add.js call: pull the fresh cart, update
+   * any cart-count badges we can find, and broadcast an event so a
+   * theme's own cart drawer/page can react if it listens for it.
+   */
+  function syncCartUi() {
+    return fetchCart()
+      .then(function (cart) {
+        updateCartCountBadges(cart);
+        document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart: cart } }));
+        document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
+        return cart;
+      })
+      .catch(function () {
+        // Non-fatal: the item was already added successfully even if
+        // this refresh step fails (e.g. offline momentarily).
+        return null;
+      });
+  }
+
+  var toastEl = null;
+  var toastTimeout = null;
+
+  /**
+   * Always-visible confirmation, independent of whatever cart icon
+   * the theme does or doesn't have. Reused across every grid instance
+   * on the page.
+   */
+  function showCartToast(message) {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'cpg-toast';
+      toastEl.setAttribute('role', 'status');
+      toastEl.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastEl);
+    }
+
+    toastEl.textContent = message;
+    toastEl.classList.add('cpg-toast--visible');
+
+    window.clearTimeout(toastTimeout);
+    toastTimeout = window.setTimeout(function () {
+      toastEl.classList.remove('cpg-toast--visible');
+    }, 2400);
+  }
+
+  /* ------------------------------------------------------------- */
   /* Grid controller factory - one per .custom-product-grid section */
   /* ------------------------------------------------------------- */
 
@@ -516,7 +611,10 @@
         })
         .then(function () {
           setAddButtonState('success');
-          document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+          return syncCartUi();
+        })
+        .then(function () {
+          showCartToast('Added to cart');
           window.setTimeout(closeModal, 900);
         })
         .catch(function (err) {
