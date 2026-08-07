@@ -47,19 +47,6 @@
   flex: 1;
 }
 
-.custom-banner__menu-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: var(--cb-ink);
-  cursor: pointer;
-  flex-shrink: 0;
-}
 
 .custom-banner__btn {
   --btn-bg: var(--cb-ink);
@@ -225,8 +212,6 @@
     align-items: center;
     padding: 16px var(--cb-gutter);
   }
-
-
 
   .custom-banner__logo {
     grid-column: 2;
