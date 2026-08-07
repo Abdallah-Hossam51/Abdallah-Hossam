@@ -1,7 +1,3 @@
-/* =========================================================
-   Custom Banner Section
-   ========================================================= */
-
 .custom-banner {
   --cb-bg: #f5f5f3;
   --cb-ink: #111111;
@@ -18,7 +14,6 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* ---------- Top bar ---------- */
 .custom-banner__topbar {
   background: var(--cb-bg);
   border-bottom: 1px solid var(--cb-line);
@@ -52,7 +47,6 @@
   flex: 1;
 }
 
-/* Hamburger menu toggle - hidden on desktop, shown on mobile */
 .custom-banner__menu-toggle {
   display: none;
   align-items: center;
@@ -67,7 +61,6 @@
   flex-shrink: 0;
 }
 
-/* ---------- Buttons (shared) ---------- */
 .custom-banner__btn {
   --btn-bg: var(--cb-ink);
   --btn-fg: var(--cb-paper);
@@ -136,7 +129,6 @@
   outline-offset: 3px;
 }
 
-/* ---------- Hero ---------- */
 .custom-banner__hero {
   position: relative;
   max-width: var(--cb-max-width);
@@ -157,7 +149,6 @@
   object-fit: cover;
 }
 
-/* Translucent glass content panel, overlaid bottom-left on the image (desktop) */
 .custom-banner__content {
   position: absolute;
   left: 64px;
@@ -206,12 +197,10 @@
   margin: 0;
 }
 
-/* CTA button - a normal flex child inside the content panel on desktop */
 .custom-banner__hero-btn {
   margin-top: 4px;
 }
 
-/* ---------- Bottom bar ---------- */
 .custom-banner__bottombar {
   background: var(--cb-bg);
   border-top: 1px solid var(--cb-line);
@@ -229,9 +218,7 @@
   color: rgba(17, 17, 17, 0.75);
 }
 
-/* ---------- Responsive: mobile ---------- */
 @media screen and (max-width: 749px) {
-  /* Top bar: hamburger + centered logo only */
   .custom-banner__topbar-inner {
     display: grid;
     grid-template-columns: 32px 1fr 32px;
@@ -254,7 +241,6 @@
     display: none;
   }
 
-  /* Hero: text stacks above a full-width image, button overlays the image */
   .custom-banner__hero {
     display: flex;
     flex-direction: column;
