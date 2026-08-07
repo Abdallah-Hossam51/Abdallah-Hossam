@@ -1,7 +1,3 @@
-/* =========================================================
-   Custom Product Grid Section + Quick View Modal
-   ========================================================= */
-
 .custom-product-grid {
   --cpg-ink: #111111;
   --cpg-paper: #ffffff;
@@ -29,7 +25,6 @@
   font-size: clamp(24px, 3vw, 32px);
 }
 
-/* ---------- Grid ---------- */
 .custom-product-grid__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -75,11 +70,8 @@
   color: var(--cpg-muted);
 }
 
-/* ---------- Floating plus button ---------- */
 .custom-product-grid__plus {
   position: absolute;
-  /* left/top/transform are set inline per block via the Hotspot X/Y
-     settings in the theme customizer - see custom-product-grid.liquid */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,10 +87,6 @@
 }
 
 .custom-product-grid__plus:hover {
-  /* !important is required here: the base translate(-50%, -50%) is
-     set inline (per-block hotspot position) which normally beats
-     external stylesheet rules, so this combines the same centering
-     with the hover scale and forces it to apply on top of it. */
   transform: translate(-50%, -50%) scale(1.08) !important;
   background: var(--cpg-ink);
   color: var(--cpg-paper);
@@ -108,10 +96,6 @@
   outline: 2px solid var(--cpg-ink);
   outline-offset: 3px;
 }
-
-/* =========================================================
-   Modal
-   ========================================================= */
 
 .custom-product-modal {
   position: fixed;
@@ -249,7 +233,6 @@
   margin: 0 0 8px;
 }
 
-/* ---------- Variant option groups ---------- */
 .cpg-option-group {
   margin-bottom: 0;
 }
@@ -302,7 +285,6 @@
   text-decoration: line-through;
 }
 
-/* ---------- Color option: joined full-width row, like the reference ---------- */
 .cpg-option-group__values--color {
   display: flex;
   flex-wrap: nowrap;
@@ -408,7 +390,6 @@
   background: #c0392b;
 }
 
-/* ---------- Cart confirmation toast ---------- */
 .cpg-toast {
   position: fixed;
   left: 50%;
@@ -447,7 +428,6 @@
   }
 }
 
-/* ---------- Responsive ---------- */
 @media screen and (max-width: 989px) {
   .custom-product-grid__grid {
     grid-template-columns: repeat(2, 1fr);
@@ -475,7 +455,6 @@
     height: 16px;
   }
 
-  /* ---------- Modal ---------- */
   .custom-product-modal {
     padding: 0;
     align-items: flex-end;
