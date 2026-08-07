@@ -421,27 +421,16 @@
     function renderVariants(product) {
       els.options.innerHTML = '';
 
-      // Shopify's /products/{handle}.js can return `options` as either
-      // plain strings (["Size", "Color"]) or objects
-      // ([{ name: "Size", ... }]) depending on the store/API version -
-      // normalize to a string either way.
-      function getOptionName(option) {
-        if (typeof option === 'string') return option;
-        if (option && typeof option.name === 'string') return option.name;
-        return 'Option';
-      }
-
       // Single-variant products with only the default "Title" option
       // don't need a picker.
       var hasRealOptions =
         product.options &&
         product.options.length > 0 &&
-        !(product.options.length === 1 && getOptionName(product.options[0]).toLowerCase() === 'title');
+        !(product.options.length === 1 && product.options[0].toLowerCase() === 'title');
 
       if (!hasRealOptions) return;
 
-      product.options.forEach(function (rawOption, optionIndex) {
-        var optionName = getOptionName(rawOption);
+      product.options.forEach(function (optionName, optionIndex) {
         var values = collectOptionValues(product, optionIndex);
         var group = document.createElement('div');
         group.className = 'cpg-option-group';
