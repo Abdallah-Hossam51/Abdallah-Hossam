@@ -1,47 +1,9 @@
-/**
- * Custom Product Grid
- * ---------------------------------------------------------------
- * Vanilla JS. No jQuery, no external libraries.
- *
- * Responsibilities:
- *  - Open a quick-view popup for a product selected in a grid card
- *  - Fetch product data from /products/{handle}.js (cached in-memory)
- *  - Render a dynamic variant picker (color swatches + size buttons)
- *  - Add the selected variant to the cart via /cart/add.js
- *  - Automatically add a "special" product when the shopper's
- *    selection resolves to a Black + Medium variant
- *
- * Public surface is intentionally empty on `window` - everything is
- * scoped inside the IIFE below. The only "global" side effect is the
- * DOMContentLoaded listener that calls init().
- * ---------------------------------------------------------------
- */
 (function () {
   'use strict';
 
-  /**
-   * In-memory product cache shared by every grid instance on the page.
-   * Prevents fetching the same /products/{handle}.js twice.
-   * key: product handle -> value: parsed product JSON
-   */
   var productCache = {};
-
-  /**
-   * In-flight request cache, so rapid double-clicks on the same
-   * product don't trigger duplicate network requests.
-   * key: product handle -> value: Promise<product>
-   */
   var pendingRequests = {};
 
-  /* ------------------------------------------------------------- */
-  /* Utilities                                                      */
-  /* ------------------------------------------------------------- */
-
-  /**
-   * Format an amount in cents into a display price string.
-   * Falls back to a simple USD-style format if Shopify's currency
-   * object isn't available on the page.
-   */
   function formatMoney(cents) {
     var amount = (cents || 0) / 100;
     var currencyCode =
@@ -58,7 +20,6 @@
     }
   }
 
-  /** Basic HTML sanitizer for product descriptions (strips <script>/<style>). */
   function sanitizeHtml(html) {
     var template = document.createElement('template');
     template.innerHTML = html || '';
@@ -68,15 +29,9 @@
     return template.innerHTML;
   }
 
-  /** True if a string looks like a "color" option name. */
   function isColorOption(name) {
     return /colou?r/i.test(name || '');
   }
-
-  /**
-   * Best-effort mapping of a color option value to a CSS color, used
-   * only for the small swatch chip. Falls back to a neutral gray.
-   */
   function guessCssColor(value) {
     var known = [
       'black', 'white', 'red', 'blue', 'green', 'yellow', 'orange',
@@ -92,10 +47,6 @@
     return '#cccccc';
   }
 
-  /**
-   * Fetch a product by handle, using the shared in-memory cache.
-   * Returns a Promise<productJson>.
-   */
   function fetchProduct(handle) {
     if (!handle) {
       return Promise.reject(new Error('Missing product handle'));
@@ -132,12 +83,6 @@
     return request;
   }
 
-  /**
-   * Returns true if a variant's option values include both a value
-   * containing "black" and a value containing "medium" (case
-   * insensitive). Works regardless of which option index color/size
-   * live in.
-   */
   function isBlackMediumVariant(variant) {
     if (!variant || !Array.isArray(variant.options)) return false;
 
@@ -153,10 +98,6 @@
     return hasBlack && hasMedium;
   }
 
-  /**
-   * Given a product JSON object, find its variant whose options
-   * contain both "black" and "medium". Returns null if none exists.
-   */
   function findBlackMediumVariant(product) {
     if (!product || !Array.isArray(product.variants)) return null;
     for (var i = 0; i < product.variants.length; i++) {
@@ -167,35 +108,8 @@
     return null;
   }
 
-  /**
-   * Fallback handle used when the section's "Auto-add product" setting
-   * hasn't been configured in the theme customizer. Set explicitly in
-   * the customizer (Section > Auto-add product) to always take
-   * priority over this fallback.
-   */
   var DEFAULT_SPECIAL_PRODUCT_HANDLE = 'dark-winter-jacket';
-
-  /* ------------------------------------------------------------- */
-  /* Cart UI sync                                                   */
-  /* ------------------------------------------------------------- */
-
-  /**
-   * Section IDs Shopify will re-render and return HTML for, if a
-   * section with that id exists in your theme (most Dawn-based
-   * themes include some of these). This is the same mechanism the
-   * default theme uses internally to keep the header cart icon and
-   * mini-cart in sync after an AJAX add - since it comes straight
-   * from the server, it's accurate regardless of what JS framework
-   * the theme itself uses.
-   */
   var CART_SECTION_IDS = ['cart-icon-bubble', 'cart-notification', 'cart-drawer', 'cart-live-region-text'];
-
-  /**
-   * Selectors for cart-count elements used by common theme patterns.
-   * Best-effort fallback for themes that don't have a matching
-   * section id above: if none of these exist on the page either,
-   * this is a no-op and the toast notification is the last resort.
-   */
   var CART_COUNT_SELECTORS = [
     '[data-cart-count]',
     '.cart-count',
@@ -213,12 +127,6 @@
     });
   }
 
-  /**
-   * Swap in server-rendered section HTML returned by /cart/add.js
-   * when a "sections" param is passed. Only touches elements that
-   * already exist on the page with a matching id - if your theme
-   * doesn't have a section with that id, this is a harmless no-op.
-   */
   function applySectionRenders(sections) {
     if (!sections) return;
 
@@ -246,9 +154,7 @@
         if (el.hasAttribute('data-cart-count') || el.matches('[data-cart-count]')) {
           el.setAttribute('data-cart-count', String(count));
         }
-        // Only overwrite text content for simple counter elements
-        // (skip elements that themselves contain further markup, like
-        // an <svg> icon wrapper, to avoid destroying the icon).
+
         if (!el.querySelector('svg') && !el.children.length) {
           el.textContent = String(count);
         }
@@ -260,11 +166,6 @@
     });
   }
 
-  /**
-   * After a successful /cart/add.js call: pull the fresh cart, update
-   * any cart-count badges we can find, and broadcast an event so a
-   * theme's own cart drawer/page can react if it listens for it.
-   */
   function syncCartUi() {
     return fetchCart()
       .then(function (cart) {
@@ -274,8 +175,6 @@
         return cart;
       })
       .catch(function () {
-        // Non-fatal: the item was already added successfully even if
-        // this refresh step fails (e.g. offline momentarily).
         return null;
       });
   }
@@ -283,11 +182,6 @@
   var toastEl = null;
   var toastTimeout = null;
 
-  /**
-   * Always-visible confirmation, independent of whatever cart icon
-   * the theme does or doesn't have. Reused across every grid instance
-   * on the page.
-   */
   function showCartToast(message) {
     if (!toastEl) {
       toastEl = document.createElement('div');
@@ -305,10 +199,6 @@
       toastEl.classList.remove('cpg-toast--visible');
     }, 2400);
   }
-
-  /* ------------------------------------------------------------- */
-  /* Grid controller factory - one per .custom-product-grid section */
-  /* ------------------------------------------------------------- */
 
   function createGridController(sectionEl) {
     var grid = sectionEl.querySelector('[data-product-grid]');
@@ -331,14 +221,11 @@
       addBtnLabel: modal.querySelector('[data-add-to-cart-label]'),
     };
 
-    // Local (non-global) state for this modal instance only.
     var state = {
       product: null,
-      selectedOptions: [], // parallel to product.options, e.g. ['Black', 'Medium']
+      selectedOptions: [],
       previouslyFocused: null,
     };
-
-    /* --------------------------- Modal open/close --------------------------- */
 
     function openModal(handle) {
       state.previouslyFocused = document.activeElement;
@@ -354,9 +241,6 @@
         .then(function (product) {
           state.product = product;
 
-          // Single-variant products (e.g. just "Default Title") have no
-          // picker to select from - pre-select their only variant so
-          // Add to Cart isn't stuck waiting for an input that never renders.
           if (product.variants.length === 1) {
             state.selectedOptions = product.variants[0].options.slice();
           } else {
@@ -403,8 +287,6 @@
       els.error.textContent = message;
     }
 
-    /* --------------------------- Rendering --------------------------- */
-
     function renderProduct(product) {
       var featuredMedia = product.featured_image || (product.images && product.images[0]);
       els.image.src = featuredMedia || '';
@@ -421,18 +303,12 @@
     function renderVariants(product) {
       els.options.innerHTML = '';
 
-      // Shopify's /products/{handle}.js can return `options` as either
-      // plain strings (["Size", "Color"]) or objects
-      // ([{ name: "Size", ... }]) depending on the store/API version -
-      // normalize to a string either way.
       function getOptionName(option) {
         if (typeof option === 'string') return option;
         if (option && typeof option.name === 'string') return option.name;
         return 'Option';
       }
 
-      // Single-variant products with only the default "Title" option
-      // don't need a picker.
       var hasRealOptions =
         product.options &&
         product.options.length > 0 &&
@@ -503,8 +379,6 @@
       return values;
     }
 
-    /* --------------------------- Selection logic --------------------------- */
-
     function selectOption(optionIndex, value) {
       state.selectedOptions[optionIndex] = value;
       syncOptionButtonStates();
@@ -521,10 +395,6 @@
       updateAvailableOptions();
     }
 
-    /**
-     * Disable option-value buttons that cannot lead to an available
-     * variant given the currently selected values on other axes.
-     */
     function updateAvailableOptions() {
       if (!state.product) return;
 
@@ -581,12 +451,6 @@
       updateAvailableOptions();
     }
 
-    /**
-     * Reflects the current selection on the Add to Cart button itself
-     * (label + disabled state), so it's always clear why the button
-     * can or can't be clicked - rather than a disabled button that
-     * silently does nothing when tapped.
-     */
     function syncAddButtonAvailability() {
       var variant = getSelectedVariant();
       els.addBtn.removeAttribute('data-state');
@@ -606,8 +470,6 @@
       }
     }
 
-    /* --------------------------- Add to cart --------------------------- */
-
     function resetAddButton() {
       syncAddButtonAvailability();
     }
@@ -625,10 +487,6 @@
       }
     }
 
-    /**
-     * Resolve the special "Black + Medium" variant of the section's
-     * configured auto-add product, using the shared product cache.
-     */
     function loadSpecialProduct() {
       if (!specialHandle) return Promise.resolve(null);
       return fetchProduct(specialHandle)
@@ -703,8 +561,6 @@
         });
     }
 
-    /* --------------------------- Event wiring --------------------------- */
-
     grid.addEventListener('click', function (event) {
       var trigger = event.target.closest('[data-product-handle]');
       if (!trigger) return;
@@ -725,15 +581,10 @@
     els.addBtn.addEventListener('click', addToCart);
   }
 
-  /* ------------------------------------------------------------- */
-  /* Init                                                           */
-  /* ------------------------------------------------------------- */
-
   function init() {
     var sections = document.querySelectorAll('[data-section-type="custom-product-grid"]');
     sections.forEach(createGridController);
 
-    // Support sections being (re)loaded via the Shopify theme editor.
     document.addEventListener('shopify:section:load', function (event) {
       var section = event.target.querySelector('[data-section-type="custom-product-grid"]');
       if (section) createGridController(section);
