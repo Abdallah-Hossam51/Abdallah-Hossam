@@ -76,22 +76,34 @@
 }
 
 /* ---------- Floating plus button ---------- */
-.custom-product-grid__plus {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: var(--cpg-paper);
-  color: var(--cpg-ink);
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-  transition: transform 0.25s ease, background 0.25s ease;
+.custom-product-grid__plus{
+    position:absolute;
+
+    width:34px;
+    height:34px;
+
+    transform:translate(-50%,-50%);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:none;
+    border-radius:50%;
+
+    background:#fff;
+    color:#111;
+
+    cursor:pointer;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.18);
+
+    z-index:5;
+}
+
+.custom-product-grid__plus svg{
+    width:14px;
+    height:14px;
 }
 
 .custom-product-grid__plus:hover {
