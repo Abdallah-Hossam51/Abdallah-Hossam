@@ -353,7 +353,16 @@
       fetchProduct(handle)
         .then(function (product) {
           state.product = product;
-          state.selectedOptions = new Array(product.options.length).fill(null);
+
+          // Single-variant products (e.g. just "Default Title") have no
+          // picker to select from - pre-select their only variant so
+          // Add to Cart isn't stuck waiting for an input that never renders.
+          if (product.variants.length === 1) {
+            state.selectedOptions = product.variants[0].options.slice();
+          } else {
+            state.selectedOptions = new Array(product.options.length).fill(null);
+          }
+
           renderProduct(product);
           renderVariants(product);
           updateVariant();
@@ -555,22 +564,41 @@
         } else if (variant.featured_image) {
           els.image.src = variant.featured_image;
         }
-        els.addBtn.disabled = !variant.available;
-        showError(variant.available ? '' : 'This combination is currently unavailable.');
-      } else {
-        els.addBtn.disabled = true;
       }
 
+      syncAddButtonAvailability();
       updateAvailableOptions();
+    }
+
+    /**
+     * Reflects the current selection on the Add to Cart button itself
+     * (label + disabled state), so it's always clear why the button
+     * can or can't be clicked - rather than a disabled button that
+     * silently does nothing when tapped.
+     */
+    function syncAddButtonAvailability() {
+      var variant = getSelectedVariant();
+      els.addBtn.removeAttribute('data-state');
+
+      if (!variant) {
+        els.addBtnLabel.textContent = 'Select options';
+        els.addBtn.disabled = true;
+        showError('');
+      } else if (!variant.available) {
+        els.addBtnLabel.textContent = 'Sold out';
+        els.addBtn.disabled = true;
+        showError('This combination is currently unavailable.');
+      } else {
+        els.addBtnLabel.textContent = 'Add to cart';
+        els.addBtn.disabled = false;
+        showError('');
+      }
     }
 
     /* --------------------------- Add to cart --------------------------- */
 
     function resetAddButton() {
-      els.addBtn.removeAttribute('data-state');
-      els.addBtnLabel.textContent = 'Add to cart';
-      var variant = getSelectedVariant();
-      els.addBtn.disabled = !variant || !variant.available;
+      syncAddButtonAvailability();
     }
 
     function setAddButtonState(newState) {
