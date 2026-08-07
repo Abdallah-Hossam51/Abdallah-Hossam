@@ -226,10 +226,7 @@
     padding: 16px var(--cb-gutter);
   }
 
-  .custom-banner__menu-toggle {
-    display: flex;
-    grid-column: 1;
-  }
+
 
   .custom-banner__logo {
     grid-column: 2;
