@@ -32,37 +32,49 @@
         "product_wNBYHy": {
           "type": "product",
           "settings": {
-            "product": "black-leather-bag"
+            "product": "black-leather-bag",
+            "hotspot_x": 66,
+            "hotspot_y": 60
           }
         },
         "product_3DeRPJ": {
           "type": "product",
           "settings": {
-            "product": "blue-silk-tuxedo"
+            "product": "blue-silk-tuxedo",
+            "hotspot_x": 88,
+            "hotspot_y": 50
           }
         },
         "product_Thfxyy": {
           "type": "product",
           "settings": {
-            "product": "chequered-red-shirt"
+            "product": "chequered-red-shirt",
+            "hotspot_x": 67,
+            "hotspot_y": 18
           }
         },
         "product_FkM4qP": {
           "type": "product",
           "settings": {
-            "product": "classic-leather-jacket"
+            "product": "classic-leather-jacket",
+            "hotspot_x": 82,
+            "hotspot_y": 16
           }
         },
         "product_YLjMJr": {
           "type": "product",
           "settings": {
-            "product": "classic-varsity-top"
+            "product": "classic-varsity-top",
+            "hotspot_x": 50,
+            "hotspot_y": 24
           }
         },
         "product_njTaNM": {
           "type": "product",
           "settings": {
-            "product": "floral-white-top"
+            "product": "dark-denim-top",
+            "hotspot_x": 83,
+            "hotspot_y": 40
           }
         }
       },
@@ -77,9 +89,7 @@
       "name": "Custom Product Grid",
       "settings": {
         "heading": "Tisso vison in the wild",
-        "special_product": "dark-winter-jacket",
-        "hotspot_x": 17,
-        "hotspot_y": 39
+        "special_product": "dark-winter-jacket"
       }
     }
   },
