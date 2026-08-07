@@ -155,9 +155,31 @@
       "id": "special_product",
       "label": "Auto-add product",
       "info": "When a shopper adds any product with a Black + Medium variant selected, this product's Black + Medium variant is added automatically. If left blank, the section looks for a product at the handle \"dark-winter-jacket\"."
-    }
+    },
+    {
+  "type": "range",
+  "id": "hotspot_x",
+  "label": "Hotspot X",
+  "min": 0,
+  "max": 100,
+  "step": 1,
+  "unit": "%",
+  "default": 85
+},
+{
+  "type": "range",
+  "id": "hotspot_y",
+  "label": "Hotspot Y",
+  "min": 0,
+  "max": 100,
+  "step": 1,
+  "unit": "%",
+  "default": 15
+}
+    
   ],
   "blocks": [
+    
     {
       "type": "product",
       "name": "Product",
@@ -167,7 +189,9 @@
           "id": "product",
           "label": "Product"
         }
+        
       ]
+      
     }
   ],
   "max_blocks": 6,
